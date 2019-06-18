@@ -6,7 +6,7 @@ import { getCourses, onActivited, getError } from '../../actions'
 import CardItem from '../ui-elements/course-block.js'
 import ErrorMessage from '../error-boundry';
 
-const KEY = 'f99d0b952da713d1bf3128ee7c651427'
+const KEY = '0805d529d4e0c0db25e5170ddbfe3729'
 const url = 'https://currate.ru/api/?get=currency_list&key='
 
 
