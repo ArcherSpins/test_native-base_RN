@@ -1,0 +1,1 @@
+export const bgComponentSmoke = '#04002a';

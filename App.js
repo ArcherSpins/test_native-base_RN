@@ -1,62 +1,70 @@
-
 import React from 'react';
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Container, Drawer, Footer, FooterTab, Badge, Button, Icon } from 'native-base';
+import { Font } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 
-import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
-import ReduxThunk from 'redux-thunk'
-import reducer from './reducers'
+import { bgComponentSmoke } from './src/constants';
 
-import Converter from './src/screens/Converter';
-import Courses from './src/screens/Courses'
+import { HeaderComponent, Sidebar, SpinnerComponent, FooterComponent } from './src/components';
 
-const store = createStore(reducer, applyMiddleware(ReduxThunk))
 
-const ConverterScreen = () => {
-    return(
-        <Provider store={store}>
-            <Converter />
-        </Provider>
-    )
-}
+export default class App extends React.Component {
 
-const CoursesScreen = () => {
-    return(
-        <Provider store={store}>
-            <Courses />
-        </Provider>
-    )
-}
-
-export default createAppContainer(createBottomTabNavigator(
-  {
-    Converter: ConverterScreen,
-    Courses: CoursesScreen
-  },
-  {
-    navigationOptions: ({ navigation }) => ({
-      tabBarLabel: '',
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        const { routeName } = navigation.state;
-        let IconComponent = Ionicons;
-        let iconName;
-        if (routeName === 'Converter') {
-          iconName = 'ios-play';
-        } else if (routeName === 'Courses') {
-          iconName = 'ios-arrow-back';
-        }
-
-        return <IconComponent name='ios-play' size={25} color='white' />;
-      },
-    }),
-    tabBarOptions: {
-        labelStyle: {
-            fontSize: 20,
-            color: 'white'
-        },
-        activeBackgroundColor: '#cc3916',
-        inactiveBackgroundColor: '#FD4D01'
-    }
+  state = {
+      loadedFont: false
   }
-));
+
+  async componentDidMount() {
+      await Font.loadAsync({
+        'Roboto': require('native-base/Fonts/Roboto.ttf'),
+        'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+        ...Ionicons.font,
+      });
+      this.setState({loadedFont: true})
+  }
+
+  closeDrawer() {
+    this.drawer._root.close()
+  };
+
+  openDrawer = () => { 
+    this.drawer._root.open()
+  };
+
+  render() {
+    if(!this.state.loadedFont) 
+      return(
+        <View style={styles.loading_container}>
+          <SpinnerComponent />
+        </View>
+      )
+
+    return (
+      <Drawer ref={(ref) => {this.drawer = ref;}}
+          content={<Sidebar bgColor={bgComponentSmoke} navigator={this.navigator} />}
+          onClose={() => this.closeDrawer()}>
+          <Container>
+            <HeaderComponent title="Sidebar" bgColor={bgComponentSmoke} openDrawer={this.openDrawer} />
+            <ScrollView style={{flex: 1}}>
+              <Text>Content</Text>
+            </ScrollView>
+            <FooterComponent bgColor={bgComponentSmoke} />
+          </Container>
+      </Drawer>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  loading_container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: bgComponentSmoke
+  }
+});
