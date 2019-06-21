@@ -1,4 +1,5 @@
-# my_mobile_app
+### apps screen
 ![](screen_shots/screen_apps.png)
+
 ### sidebar
 ![](screen_shots/sidebar.png)
