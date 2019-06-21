@@ -35,4 +35,17 @@ export default [
         comments: 12,
         timer: '21h'
     }
+    ,
+    {
+        id: 'qewdqewf234fr3f3g4g35gh54btbrtygbnt3r2r',
+        thumbnail: 'http://cdn.agarz.com/furkan2.png',
+        imageCard: 'https://i.pinimg.com/originals/f2/aa/d6/f2aad659eef88ed54ba5638ea1a87439.jpg',
+        author: {
+            title: 'Spider Max',
+            description: 'spiderman@mail.ru'
+        },
+        likes: 17,
+        comments: 9,
+        timer: '18h'
+    }
 ]

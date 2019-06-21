@@ -72,12 +72,12 @@ class AppsScreen extends React.Component {
                             : 
                             <View>
                                 <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 15}}>
-                                    <Text style={styles.title}>Список популярных</Text>
-                                    <Image source={{uri: 'https://www.shareicon.net/download/2016/02/07/281272_star_512x512.png'}} style={styles.title_image} />
+                                    <Text style={styles.title}>Список бесплатных</Text>
+                                    <Image source={{uri: 'https://techtipsmanish.com/wp-content/uploads/2018/09/YouTube_monetization-1.png'}} style={styles.title_image} />
                                 </View>
                                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                                     {
-                                        cards_big.map(card => (
+                                        cards_big.reverse().map(card => (
                                             <CardBig key={card.id} {...card} />
                                         ))
                                     }

@@ -4,7 +4,7 @@ import { Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from
 
 const CardBig = ({ thumbnail, imageCard, author, likes, comments, timer }) => {
     return (
-        <TouchableOpacity style={{marginHorizontal: 7}}>
+        <TouchableOpacity activeOpacity={0.7} style={{marginHorizontal: 7}}>
             <Card>
                 <CardItem>
                     <Left>
