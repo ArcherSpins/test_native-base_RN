@@ -1,2 +1,2 @@
 # my_mobile_app
-![](screen_shots/screen_app.png)
+![](screen_shots/screen_apps.png)
