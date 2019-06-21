@@ -1,16 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { Container, Drawer, Footer, FooterTab, Badge, Button, Icon } from 'native-base';
+import { StyleSheet, View} from 'react-native';
 import { Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import ReduxThunk from 'redux-thunk'
+import reducer from './reducers'
+
 import { bgComponentSmoke } from './src/constants';
+import { SpinnerComponent } from './src/components';
 
-import { HeaderComponent, Sidebar, SpinnerComponent, FooterComponent } from './src/components';
+import DrawerNavigationComponent from './src/screens';
 
+const store = createStore(reducer, applyMiddleware(ReduxThunk))
 
 export default class App extends React.Component {
-
   state = {
       loadedFont: false
   }
@@ -24,14 +29,6 @@ export default class App extends React.Component {
       this.setState({loadedFont: true})
   }
 
-  closeDrawer() {
-    this.drawer._root.close()
-  };
-
-  openDrawer = () => { 
-    this.drawer._root.open()
-  };
-
   render() {
     if(!this.state.loadedFont) 
       return(
@@ -41,17 +38,9 @@ export default class App extends React.Component {
       )
 
     return (
-      <Drawer ref={(ref) => {this.drawer = ref;}}
-          content={<Sidebar bgColor={bgComponentSmoke} navigator={this.navigator} />}
-          onClose={() => this.closeDrawer()}>
-          <Container>
-            <HeaderComponent title="Sidebar" bgColor={bgComponentSmoke} openDrawer={this.openDrawer} />
-            <ScrollView style={{flex: 1}}>
-              <Text>Content</Text>
-            </ScrollView>
-            <FooterComponent bgColor={bgComponentSmoke} />
-          </Container>
-      </Drawer>
+      <Provider store={store}>
+          <DrawerNavigationComponent />
+      </Provider>
     );
   }
 }

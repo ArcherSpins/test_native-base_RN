@@ -8,17 +8,13 @@ import { screens } from './screens';
 
 class Sidebar extends Component {
 
-    async componentWillMount() {
-        await Font.loadAsync({
-          'Roboto': require('native-base/Fonts/Roboto.ttf'),
-          'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-          ...Ionicons.font,
-        });
+    goToPage = (url) => {
+        this.props.navigate(url)
+        this.props.closeDrawer()
     }
 
     render() {
         const { bgColor } = this.props;
-        
 
         return (
             <ScrollView style={[styles.container, {backgroundColor: bgColor}]}>
@@ -38,7 +34,8 @@ class Sidebar extends Component {
                     <View style={styles.container_buttons}>
                         {
                             screens.map(screen => (
-                                <Button key={screen.id} style={[styles.button, {backgroundColor: screen.colorButton}]} block>
+                                <Button onPress={() => this.goToPage(screen.url)} key={screen.id} 
+                                        style={[styles.button, {backgroundColor: screen.colorButton, marginTop: screen.logout ? 40 : 20 }]} block>
                                     <Ionicons name={screen.icon} color={screen.color} size={22} />
                                     <Text style={{color: screen.color, fontSize: 18, textAlign: 'left', marginLeft: 10}}>{screen.title}</Text>
                                 </Button>
