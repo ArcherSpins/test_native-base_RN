@@ -3,3 +3,5 @@
 ![](screen_shots/screen_apps_2.png)
 ### sidebar
 ![](screen_shots/sidebar.png)
+### news screen
+![](screen_shots/news_screen.png)
