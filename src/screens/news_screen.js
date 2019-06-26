@@ -1,30 +1,58 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native'
-import { Container, Drawer } from 'native-base';
-import { HeaderComponent, Sidebar, SpinnerComponent, FooterComponent } from '../components';
-import { bgComponentSmoke } from '../constants';
-import HocScreen from '../hoc/screen_hoc';
+import { View, ScrollView, StyleSheet, ActivityIndicator } from 'react-native'
+import { connect } from 'react-redux';
 
-class AppsScreen extends React.Component {
+import { getNews } from '../../actions';
+
+import HocScreen from '../hoc/screen_hoc';
+import { bgContainer, bgComponentSmoke } from '../constants';
+import { NewsCard } from '../ui-elements';
+
+
+class NewsScreen extends React.Component {
 
     static navigationOptions = {
         tabBarVisible: false,
     };
+
+    componentDidMount = () => {
+        this.props.getNews()
+    }
   
     render() {
-      return(
-          <HocScreen {...this.props} title="News">
-            <Text>News Screen</Text>
-          </HocScreen>
-      )
+        const { news, loadingNews } = this.props;
+
+        return(
+            <HocScreen {...this.props} title="News">
+                <ScrollView>
+                    <View style={styles.content}>
+                        {
+                            loadingNews ? <ActivityIndicator size="large" color={bgComponentSmoke} />
+                            :   news.map(item => (
+                                <NewsCard {...item} key={item.id} />
+                                ))
+                        }
+                    </View>
+                </ScrollView>
+            </HocScreen>
+        )
     }
 }
 
 
 const styles = StyleSheet.create({
     content: {
-        flex: 1
+        padding: 10,
+        backgroundColor: bgContainer,
     }
 });
 
-export default AppsScreen 
+
+const mapStateToProps = (state) => {
+    return {
+        news: state.news_reducer.news,
+        loadingNews: state.news_reducer.loadingNews
+    }
+}
+
+export default connect(mapStateToProps, { getNews })(NewsScreen);
