@@ -1,30 +1,57 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native'
-import { Container, Drawer } from 'native-base';
-import { HeaderComponent, Sidebar, SpinnerComponent, FooterComponent } from '../components';
-import { bgComponentSmoke } from '../constants';
+import { ScrollView, View, StyleSheet, ActivityIndicator } from 'react-native'
 import HocScreen from '../hoc/screen_hoc';
+import { getContacts } from '../../actions';
+import { connect } from 'react-redux';
+import { bgContainer, bgComponentSmoke } from '../constants';
+import { ContactItemComponent } from '../ui-elements';
 
 class ContactsScreen extends React.Component {
 
     static navigationOptions = {
         tabBarVisible: false,
     };
+
+    componentDidMount() {
+        this.props.getContacts()
+    }
   
     render() {
-      return(
-          <HocScreen {...this.props} title="Contacts">
-            <Text>Contacts Screen</Text>
-          </HocScreen>
-      )
+        const { loadingContacts, contacts } = this.props;
+        return(
+            <HocScreen {...this.props} title="Contacts">
+                <ScrollView>
+                    <View style={styles.content}>
+                        {
+                            loadingContacts ? <ActivityIndicator size="large" color={bgComponentSmoke} />
+                            :   contacts.map(item => (
+                                <ContactItemComponent {...item} key={item.id} />
+                                ))
+                        }
+                    </View>
+                </ScrollView>
+            </HocScreen>
+        )
     }
 }
 
 
 const styles = StyleSheet.create({
     content: {
-        flex: 1
+        backgroundColor: 'white',
     }
 });
 
-export default ContactsScreen 
+
+const mapStateTpProps = (state) => {
+    return{
+        contacts: state.contacts_reducer.contacts,
+        loadingContacts: state.contacts_reducer.loadingContacts
+    }
+}
+
+const mapDispatchToProps = {
+    getContacts
+}
+
+export default connect(mapStateTpProps, mapDispatchToProps)(ContactsScreen)
